@@ -1,10 +1,18 @@
-datasets
-transformers
-nltk
-donut-python
-pytorch-lightning
 tensorboard
 tensorboardx
 timm
 torch
 torch-vision
+transformers datasets sentencepiece
+pytorch-lightning wandb
+sconf
+donut-python
+pytorch-lightning==2.0.7
+timm==0.5.4
+transformers
+pytorch-lightning==1.6.4
+transformers==4.11.3
+numpy
+donut
+boto3
+requests

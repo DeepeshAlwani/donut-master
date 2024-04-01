@@ -6,9 +6,8 @@ if ! command -v pdftoppm &> /dev/null; then
     sudo yum install -y poppler-utils
 fi
 
-token = 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
 
-huggingface-cli login --token $token
+huggingface-cli login --token $3
 
 # Path to the requirements.txt file
 REQUIREMENTS_FILE="requirement.txt"
@@ -23,3 +22,15 @@ fi
 
 # Install libraries listed in requirements.txt
 pip install -r "$REQUIREMENTS_FILE"
+
+DOWNLOAD_FILE="download_training_data.py"
+
+python "$DOWNLOAD_FILE" $1 $2
+
+DATASET_FILE="run_donut.py"
+
+python "$DATASET_FILE"
+
+TRAINER_FILE="donut_training.py"
+
+python "$TRAINER_FILE"
