@@ -1,0 +1,27 @@
+{
+  "header": {
+    "vendorName": "NEFCO",
+    "invoiceDate": "02/07/18",
+    "invoiceNumber": "$2867085.001"
+  },
+  "items": [
+    {
+      "amount": "307.50",
+      "unitPrice": "5",
+      "orderedQuantity": "5",
+      "productDesc": "DBI # 2199806 PROTECTA COMPLIANCE IN A CAN HARNESS, 6 FT LANYARD W/SHOCK PACK AND BUCKET"
+    },
+    {
+      "amount": "265.00",
+      "orderedQuantity": "1",
+      "unitPrice": "265.000/EA",
+      "productDesc": "DIA05843 (500DDCB/PB) 5\" DIAMOND CORE BIT PREMIUM BLACK"
+    },
+    {
+      "amount": "35.96",
+      "orderedQuantity": "4",
+      "unitPrice": "8.990/EA",
+      "productDesc": "KRYLON # S02007 COMPRESSED AIR DUSTER"
+    }
+  ]
+}

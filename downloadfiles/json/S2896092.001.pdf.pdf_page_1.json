@@ -1,0 +1,16 @@
+{
+  "header": {
+    "vendorName": "NEFCO",
+    "invoiceDate": "04/11/18",
+    "invoiceNumber": "$2896092.001"
+  },
+  "items": [
+    {
+      "unitPrice": "1189.950/EA",
+      "productDesc": "MILWAUKEE # 6480-20 SAW PANEL 8",
+      "orderedQuantity": "1",
+      "shippedQuantity": "1",
+      "amount": "1189.95"
+    }
+  ]
+}

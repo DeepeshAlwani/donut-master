@@ -1,0 +1,37 @@
+{
+  "header": {
+    "vendorName": "NEFCO",
+    "invoiceDate": "05/09/18",
+    "invoiceNumber": "$2923082.001"
+  },
+  "items": [
+    {
+      "unitPrice": "2.817/EA",
+      "amount": "33.80",
+      "shippedQuantity": "12",
+      "orderedQuantity": "12",
+      "productDesc": "RUST - OLEUM # V2407830 SPRAY PAINT RED OVERALL OVERALL 10 OZ MSDS Sheet# TOPCOAT Required"
+    },
+    {
+      "amount": "33.80",
+      "unitPrice": "2.817/EA",
+      "shippedQuantity": "12",
+      "orderedQuantity": "12",
+      "productDesc": "RUST-OLEUM V2402830 SPRAY PAINT BLACK OVERALL OVERALL 10 OZ MSDS Sheet# TOPCOAT Required"
+    },
+    {
+      "unitPrice": "19.062/EA",
+      "amount": "19.06",
+      "shippedQuantity": "1",
+      "orderedQuantity": "1",
+      "productDesc": "624GSL26 1 GAL CONTAINER DENATURED ALCOHOL"
+    },
+    {
+      "productDesc": "ET # 25548 BLUE MASKING TAPE 2\" X 60 YD EASY RELEASE LOW ADHESIVE PAINTERS TAPE",
+      "unitPrice": "5.967/EA",
+      "amount": "71.60",
+      "shippedQuantity": "12",
+      "orderedQuantity": "12"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "header": {
+    "vendorName": "NEFCO",
+    "invoiceDate": "05/25/18",
+    "invoiceNumber": "$2933722.001"
+  },
+  "items": [
+    {
+      "unitPrice": "28.580/ea",
+      "productDesc": "MILWAUKEE # 4B-20-7215**PROMOCREDIT",
+      "shippedQuantity": "-1",
+      "orderedQuantity": "1"
+    },
+    {
+      "shippedQuantity": "3",
+      "unitPrice": "49.000/ea",
+      "orderedQuantity": "4",
+      "productDesc": "GREENLEE # 841AH BENDER HAND 3/4\" EMT, 1/2\" RIGID W/HANDLE"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "header": {
+    "vendorName": "NEFCO",
+    "invoiceDate": "04/17/18",
+    "invoiceNumber": "$2908936.001"
+  },
+  "items": [
+    {
+      "productDesc": "may be",
+      "orderedQuantity": "1",
+      "unitPrice": "999.000/ea",
+      "shippedQuantity": "1",
+      "amount": "999.00"
+    },
+    {
+      "productDesc": "subject to handl Ling charges.",
+      "orderedQuantity": "2",
+      "unitPrice": "299.000/EA",
+      "shippedQuantity": "2",
+      "amount": "0.00"
+    }
+  ]
+}

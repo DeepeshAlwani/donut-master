@@ -1,0 +1,30 @@
+{
+  "header": {
+    "vendorName": "NEFCO",
+    "invoiceDate": "05/02/18",
+    "invoiceNumber": "$2918906.001"
+  },
+  "items": [
+    {
+      "productDesc": "GREENLEE # 2448 STORAGE BOX 48L X X 25H 24W",
+      "unitPrice": "360.00/E",
+      "shippedQuantity": "1",
+      "amount": "360.00",
+      "orderedQuantity": "1"
+    },
+    {
+      "orderedQuantity": "-",
+      "shippedQuantity": "1",
+      "productDesc": "CASTSET6R6S CASTER SET (2) (2) 6\" 6\" RIDGID CASTERS, CASTERS, SWIVEL KNAACK & GREENLEE HARDWARE",
+      "unitPrice": "75.00/ST",
+      "amount": "75.00"
+    },
+    {
+      "orderedQuantity": "1",
+      "amount": "0.00",
+      "productDesc": "I I HAVE INSPECTED THESE JOB FOR AND AND FIND THEM THEM TO BE IN GOOD CONDITION ACCEPT AS DELIVERED.",
+      "shippedQuantity": "1",
+      "unitPrice": "0.00/EA"
+    }
+  ]
+}

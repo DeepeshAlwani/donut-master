@@ -1,0 +1,16 @@
+{
+  "header": {
+    "vendorName": "NEFCO",
+    "invoiceDate": "04/17/18",
+    "invoiceNumber": "$2906249.001"
+  },
+  "items": [
+    {
+      "productDesc": "MAX CABLE CUTTING TOOL (BARE) DEWALT # DCE150B 20V",
+      "orderedQuantity": "1",
+      "unitPrice": "793.022/ea",
+      "shippedQuantity": "1",
+      "amount": "793.02"
+    }
+  ]
+}

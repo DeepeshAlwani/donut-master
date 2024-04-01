@@ -18,10 +18,15 @@ if [ ! -f "$REQUIREMENTS_FILE" ]; then
     exit 1
 fi
 
+sudo yum install python3-venv
 
+python3 -m venv myenv
+source myenv/bin/activate
+
+pip install huggingface-cli
 
 # Install libraries listed in requirements.txt
-pip install -r "$REQUIREMENTS_FILE"
+pip install -r requirement.txt
 
 DOWNLOAD_FILE="download_training_data.py"
 

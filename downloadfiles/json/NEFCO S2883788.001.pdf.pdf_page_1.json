@@ -1,0 +1,16 @@
+{
+  "header": {
+    "vendorName": "NEFCO",
+    "invoiceDate": "03/20/18",
+    "invoiceNumber": "52883788.001"
+  },
+  "items": [
+    {
+      "productDesc": "GREENLEE # 07496 BLADE CIRCULAR SAW (NOTCH) (52082255)",
+      "orderedQuantity": "5",
+      "shippedQuantity": "5",
+      "amount": "1249.75",
+      "unitPrice": "249.950/ea"
+    }
+  ]
+}

@@ -17,8 +17,6 @@ if len(sys.argv) != 3:
 AWS_ACCESS_KEY_ID = sys.argv[1]
 AWS_SECRET_ACCESS_KEY = sys.argv[2]
 
-print(f"arg1 = {AWS_ACCESS_KEY_ID} arg2={AWS_SECRET_ACCESS_KEY}")
-
 def count_entries_by_vendor():
     # Create a DynamoDB client with specified credentials
     dynamodb = boto3.client('dynamodb', region_name=AWS_REGION,
@@ -37,7 +35,7 @@ def count_entries_by_vendor():
 
     urls_dict = {}
     for vendor, count in vendor_counts.items():
-        if count > 5:
+        if count > 45:
             response = dynamodb.scan(
                 TableName=table_name,
                 FilterExpression='vendorName = :vendor',
@@ -48,7 +46,8 @@ def count_entries_by_vendor():
             for item in items:
                 s3_url = item.get('s3Url', {}).get('S')
                 json_url = item.get('jsonUrl', {}).get('S')
-                urls_dict[vendor].append({'s3Url': s3_url, 'jsonUrl': json_url})
+                annotation_key = item.get('annotationKey',{}).get('S')
+                urls_dict[vendor].append({'s3Url': s3_url, 'jsonUrl': json_url, 'annotationKey':annotation_key})
 
     return urls_dict
 def download_jpeg_files(urls_dict, folder_name):
@@ -65,15 +64,17 @@ def download_jpeg_files(urls_dict, folder_name):
     for vendor, urls_list in urls_dict.items():
         for urls in urls_list:
             s3_url = urls['s3Url']
+            key = '/'.join(s3_url.split('/')[3:])  # Get the key from the URL
             presigned_url = s3.generate_presigned_url('get_object',
-                                          Params={'Bucket': S3_BUCKET_NAME, 'Key': s3_url},
-                                          ExpiresIn=3600)
+                                            Params={'Bucket': S3_BUCKET_NAME, 'Key': key},
+                                            ExpiresIn=360)
             response = requests.get(presigned_url)
             filename = s3_url.split('/')[-1]  # Get the filename from the URL
             file_path = os.path.join(download_folder, folder_name)
             os.makedirs(file_path, exist_ok=True)
-            file_path = os.path.join(file_path, filename )
+            file_path = os.path.join(file_path, filename)
             # Download the file from S3
+            print(presigned_url)
             with open(file_path, 'wb') as f:
                 f.write(response.content)
 
@@ -91,9 +92,10 @@ def download_json_files(urls_dict, folder_name):
     for vendor, urls_list in urls_dict.items():
         for urls in urls_list:
             s3_url = urls['jsonUrl']
+            key = '/'.join(s3_url.split('/')[3:])  # Get the key from the URL
             presigned_url = s3.generate_presigned_url('get_object',
-                                          Params={'Bucket': S3_BUCKET_NAME, 'Key': s3_url},
-                                          ExpiresIn=3600)
+                                            Params={'Bucket': S3_BUCKET_NAME, 'Key': key},
+                                            ExpiresIn=360)
             response = requests.get(presigned_url)
             filename = s3_url.split('/')[-1]  # Get the filename from the URL
             file_path = os.path.join(download_folder, folder_name)
@@ -108,12 +110,9 @@ urls_dict = count_entries_by_vendor()
 for vendor, urls_list in urls_dict.items():
     print(f"Vendor: {vendor}")
     for urls in urls_list:
-        print(f"s3Url: {urls['s3Url']}, jsonUrl: {urls['jsonUrl']}")
-
-if __name__ == "__main__":
+        print(f"s3Url: {urls['s3Url']}, jsonUrl: {urls['jsonUrl']}, annotationKey: {urls['annotationKey']}")
 
 
+download_jpeg_files(urls_dict, 'images')
 
-    download_jpeg_files(urls_dict, 'images')
-
-    download_json_files(urls_dict, 'json')
+download_json_files(urls_dict, 'json')

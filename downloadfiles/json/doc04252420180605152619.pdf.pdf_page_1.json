@@ -1,0 +1,16 @@
+{
+  "header": {
+    "vendorName": "NEFCO",
+    "invoiceDate": "04/24/18",
+    "invoiceNumber": "$2906249.002"
+  },
+  "items": [
+    {
+      "productDesc": "DEWALT # D28715 CHOP SAW 14\" 5.5HP 4,000 RPM 1\" ARBOR",
+      "unitPrice": "190.934/EA",
+      "orderedQuantity": "1",
+      "shippedQuantity": "1",
+      "amount": "190.93"
+    }
+  ]
+}

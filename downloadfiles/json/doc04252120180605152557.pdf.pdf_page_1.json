@@ -1,0 +1,16 @@
+{
+  "header": {
+    "vendorName": "NEFCO",
+    "invoiceDate": "06/29/18",
+    "invoiceNumber": "$2932191.001"
+  },
+  "items": [
+    {
+      "productDesc": "ACUDOR #FW 5015 FW-5015 18 X 18 FOR WALLS FIRE RATED",
+      "shippedQuantity": "9",
+      "unitPrice": "170.000/EA",
+      "amount": "1530.00",
+      "orderedQuantity": "9"
+    }
+  ]
+}

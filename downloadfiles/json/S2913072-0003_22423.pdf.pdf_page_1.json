@@ -1,0 +1,15 @@
+{
+  "header": {
+    "vendorName": "NEFCO",
+    "invoiceDate": "05/01/18"
+  },
+  "items": [
+    {
+      "shippedQuantity": "1",
+      "amount": "1029.26",
+      "productDesc": "GREENLEE # 24395 (802) HYD CABLE BENDER W/H.P. HOSE UNIT & STORAGE BOX",
+      "unitPrice": "1029.26/E",
+      "orderedQuantity": "1"
+    }
+  ]
+}

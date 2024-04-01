@@ -1,0 +1,16 @@
+{
+  "header": {
+    "vendorName": "NEFCO",
+    "invoiceDate": "06/01/18",
+    "invoiceNumber": "$2933722.003"
+  },
+  "items": [
+    {
+      "orderedQuantity": "5",
+      "unitPrice": "159.990/EA",
+      "shippedQuantity": "5",
+      "amount": "799.95",
+      "productDesc": "HARNESS 3100425 11FT SRL, 5900578 PASS THRU ADAPTER, AND AK061A GEAR BAG (WAS SP-KIT) DBI # 2199849 PROTECTA PRO SRL KIT CONSISTING OF:"
+    }
+  ]
+}

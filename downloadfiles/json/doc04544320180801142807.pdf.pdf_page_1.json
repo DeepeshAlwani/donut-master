@@ -1,0 +1,23 @@
+{
+  "header": {
+    "vendorName": "NEFCO",
+    "invoiceDate": "07/18/18",
+    "invoiceNumber": "$2966108.001"
+  },
+  "items": [
+    {
+      "productDesc": "GREENLEE # 555CX ELECTRIC BENDER WITH ANGLE PENDANT (LESS SHOES)",
+      "unitPrice": "3328.350/ea",
+      "orderedQuantity": "2",
+      "amount": "6656.70",
+      "shippedQuantity": "2"
+    },
+    {
+      "orderedQuantity": "2",
+      "productDesc": "GREENLEE 13934 1/2 2\" EMT SHOE GROUP FOR 555DX 555CX BENDERS CONSISTS # 02543 SHOE UNIT, UNIT, 13857 FORM ROLLER 02567 SUPPORT UNIT & 1723 BOX",
+      "unitPrice": "1704.470/E",
+      "shippedQuantity": "2",
+      "amount": "3408.94"
+    }
+  ]
+}

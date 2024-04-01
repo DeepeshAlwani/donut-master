@@ -1,0 +1,30 @@
+{
+  "header": {
+    "vendorName": "NEFCO",
+    "invoiceDate": "05/18/18",
+    "invoiceNumber": "$2929597.001"
+  },
+  "items": [
+    {
+      "orderedQuantity": "1",
+      "unitPrice": "318.231/EA",
+      "amount": "318.23",
+      "shippedQuantity": "1",
+      "productDesc": "DEWALT # DWM120K BAND SAW VAR SPEED 4-3/4\" DEEP CUT AMP"
+    },
+    {
+      "orderedQuantity": "1",
+      "shippedQuantity": "1",
+      "unitPrice": "279.000/ea",
+      "amount": "279.00",
+      "productDesc": "MILWAUKEE # 5268-21 1-1/8 SDS PLUS ROTARY HAMMER KIT"
+    },
+    {
+      "unitPrice": "1",
+      "orderedQuantity": "1",
+      "amount": "0.00",
+      "shippedQuantity": "1",
+      "productDesc": "NEFCO # 48-03-3135**PROMOTIONAL PRODUCT: FREE SDS+ DUST TRAP DRILLING SHROUD WITH SELECT MILWAUKEE TOOL PURCHASES."
+    }
+  ]
+}

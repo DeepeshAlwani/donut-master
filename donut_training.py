@@ -1,4 +1,4 @@
-pretrained_model_path = ("/home/ec2-user/donut-starElectric") 
+pretrained_model_path = ("donut") 
 
 from datasets import load_dataset
 

@@ -1,0 +1,16 @@
+{
+  "header": {
+    "vendorName": "NEFCO",
+    "invoiceDate": "05/23/18",
+    "invoiceNumber": "$2932478.001"
+  },
+  "items": [
+    {
+      "unitPrice": "7.215/EA",
+      "orderedQuantity": "2",
+      "amount": "14.43",
+      "shippedQuantity": "2",
+      "productDesc": "RUST- OLEUM # V2178838 SPRAY PAINT FLAT BLACK HIGH PERFORMANCE ENAMEL AEROSOL 20 OZ MSDS Sheet# TOPCOAT HARDHAT Required"
+    }
+  ]
+}

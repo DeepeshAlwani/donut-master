@@ -1,0 +1,23 @@
+{
+  "header": {
+    "vendorName": "NEFCO",
+    "invoiceDate": "05/14/18",
+    "invoiceNumber": "$2925692.001"
+  },
+  "items": [
+    {
+      "productDesc": "GREENLEE # C3AW AUTO WHIP CLAD CABLE CABLE CABLE CUTTER COMPATIBILITY: TYPE AC (BX), MC & FMC SIZES: 1/2\" 1\" OD",
+      "shippedQuantity": "1",
+      "unitPrice": "20750.00/EA",
+      "amount": "20750.00",
+      "orderedQuantity": "-"
+    },
+    {
+      "unitPrice": "1.00/EA",
+      "orderedQuantity": "-224",
+      "shippedQuantity": "-224",
+      "amount": "-224.00",
+      "productDesc": "Valued Instant Rebate"
+    }
+  ]
+}

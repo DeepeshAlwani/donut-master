@@ -1,0 +1,44 @@
+{
+  "header": {
+    "vendorName": "NEFCO",
+    "invoiceDate": "02/20/18",
+    "invoiceNumber": "$2875307.001"
+  },
+  "items": [
+    {
+      "productDesc": "MILWAUKEE # 48-20-7438 1/4x18x20 SDS 2-CUTTER CARBIDE BIT",
+      "unitPrice": "16.33/EA",
+      "orderedQuantity": "10",
+      "amount": "163.33",
+      "shippedQuantity": "10"
+    },
+    {
+      "shippedQuantity": "5",
+      "orderedQuantity": "5",
+      "productDesc": "MILWAUKEE # 48-20-7477 1/2x16x18 SDS 2-CUTTER CARBIDE BIT",
+      "unitPrice": "14.82/EA",
+      "amount": "74.08"
+    },
+    {
+      "orderedQuantity": "50",
+      "shippedQuantity": "50",
+      "productDesc": "10N375DRF/B #10 3-3/4 DRYWALL SCREW FINE THREAD BULK",
+      "unitPrice": "6.75/C",
+      "amount": "3.38"
+    },
+    {
+      "shippedQuantity": "200",
+      "productDesc": "50C150HCS2Z/P 1/2-13 1-1/2 HEX CAP SCREW PKG ZINC PLTD 50/bx",
+      "orderedQuantity": "200",
+      "amount": "48.00",
+      "unitPrice": "24.00/c"
+    },
+    {
+      "unitPrice": "6.75/C",
+      "orderedQuantity": "450",
+      "shippedQuantity": "450",
+      "amount": "30.38",
+      "productDesc": "TWINFAST BULK PLAIN FINISH PRO-TWIST #FS312 10N350DRF/B #10 3-1/2 DRYWALL SCREW FINE"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "header": {
+    "vendorName": "NEFCO",
+    "invoiceDate": "06/06/18",
+    "invoiceNumber": "52940809.001"
+  },
+  "items": [
+    {
+      "productDesc": "DBI # 2199849 PROTECTA PRO SRL KIT CONSISTING OF: AB17550 HARNESS (MED LARGE) 3100425 11FT SRL, 5900578 PASS THRU ADAPTER, AND AK061A GEAR BAG (WAS SP-KIT)",
+      "shippedQuantity": "4",
+      "unitPrice": "159.990/EA",
+      "orderedQuantity": "4",
+      "amount": "639.96"
+    },
+    {
+      "amount": "75.76",
+      "orderedQuantity": "2",
+      "unitPrice": "37.880/ea",
+      "productDesc": "DBI # AB17550 PROTECTA 5 POINT HARNESS BACK D-RING TONGUE BUCKLE LEGS MED - LARGE"
+    }
+  ]
+}

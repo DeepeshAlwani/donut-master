@@ -1,0 +1,22 @@
+{
+  "header": {
+    "vendorName": "NEFCO",
+    "invoiceDate": "07/12/18",
+    "invoiceNumber": "$2899439.004"
+  },
+  "items": [
+    {
+      "orderedQuantity": "2",
+      "unitPrice": "360.000/E",
+      "productDesc": "GREENLEE # 2448 STORAGE BOX 48L X X 25H 24W",
+      "amount": "720.00",
+      "shippedQuantity": "2"
+    },
+    {
+      "orderedQuantity": "2",
+      "shippedQuantity": "2",
+      "unitPrice": "0.000/EA",
+      "amount": "0.00"
+    }
+  ]
+}

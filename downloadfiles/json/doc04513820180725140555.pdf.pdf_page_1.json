@@ -1,0 +1,16 @@
+{
+  "header": {
+    "vendorName": "NEFCO",
+    "invoiceNumber": "S2959715.00",
+    "invoiceDate": "17/06/18"
+  },
+  "items": [
+    {
+      "orderedQuantity": "2",
+      "unitPrice": "177.769/EA",
+      "amount": "355.54",
+      "shippedQuantity": "2",
+      "productDesc": "CARBIDE CORE BIT 3\" THICK WALL INCLUDES GUIDE PLATE & CENTERING PIN"
+    }
+  ]
+}

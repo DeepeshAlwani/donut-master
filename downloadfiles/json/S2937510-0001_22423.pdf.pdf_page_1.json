@@ -1,0 +1,16 @@
+{
+  "header": {
+    "vendorName": "NEFCO",
+    "invoiceDate": "06/01/18",
+    "invoiceNumber": "$2937510.001"
+  },
+  "items": [
+    {
+      "productDesc": "ET # 25548 (PT14 38) BLUE MASKING TAPE TAPE 2\" X 60 YD EASY RELEASE LOW ADHESIVE PAINTERS",
+      "amount": "143.04",
+      "unitPrice": "5.96/EA",
+      "orderedQuantity": "24"
+    }
+  ],
+  "shippedQuantity": "24"
+}

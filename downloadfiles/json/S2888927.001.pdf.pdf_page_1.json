@@ -1,0 +1,16 @@
+{
+  "header": {
+    "vendorName": "NEFCO",
+    "invoiceDate": "03/23/18",
+    "invoiceNumber": "52888927.001"
+  },
+  "items": [
+    {
+      "productDesc": "# DEWALT DCG413R2 20V XR 4-1/2\" SMALL ANGLE GRINDER KIT WITH PADDLE SWITCH & KICKBACK BRAKE",
+      "orderedQuantity": "2",
+      "shippedQuantity": "2",
+      "unitPrice": "330.879/ea",
+      "amount": "661.76"
+    }
+  ]
+}

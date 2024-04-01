@@ -1,0 +1,23 @@
+{
+  "header": {
+    "vendorName": "NEFCO",
+    "invoiceDate": "02/20/18",
+    "invoiceNumber": "$2874340.001"
+  },
+  "items": [
+    {
+      "productDesc": "NEFCO # 7720-22 M18 FUEL SAWZALL RECIPROCATING KIT (2 5.0 Batteries, Charger, Kit Bag)",
+      "shippedQuantity": "1",
+      "unitPrice": "269.00/EA",
+      "amount": "269.00",
+      "orderedQuantity": "-"
+    },
+    {
+      "productDesc": "RIDGID C-36 CHAIN WRENCH",
+      "shippedQuantity": "1",
+      "orderedQuantity": "1",
+      "amount": "199.25",
+      "unitPrice": "199.25/EA"
+    }
+  ]
+}
