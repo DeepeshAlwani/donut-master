@@ -1,0 +1,10 @@
+datasets
+transformers
+nltk
+donut-python
+pytorch-lightning
+tensorboard
+tensorboardx
+timm
+torch
+torch-vision
