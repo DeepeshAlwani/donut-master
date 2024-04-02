@@ -7,8 +7,6 @@ if ! command -v pdftoppm &> /dev/null; then
 fi
 
 
-huggingface-cli login --token $3
-
 # Path to the requirements.txt file
 REQUIREMENTS_FILE="requirement.txt"
 
@@ -24,6 +22,8 @@ python3 -m venv myenv
 source myenv/bin/activate
 
 pip install huggingface-cli
+
+huggingface-cli login --token $3
 
 # Install libraries listed in requirements.txt
 pip install -r requirement.txt
