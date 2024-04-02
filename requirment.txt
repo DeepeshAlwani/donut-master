@@ -1,14 +1,11 @@
 tensorboard
 tensorboardx
-timm
-transformers
 datasets
 sentencepiece
 sconf
 donut-python
 pytorch-lightning==2.0.7
 timm==0.5.4
-transformers
 pytorch-lightning==1.6.4
 transformers==4.11.3
 numpy
