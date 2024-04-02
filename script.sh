@@ -16,10 +16,6 @@ if [ ! -f "$REQUIREMENTS_FILE" ]; then
     exit 1
 fi
 
-sudo yum install python3-venv
-
-python3 -m venv myenv
-source myenv/bin/activate
 
 pip install huggingface-cli
 

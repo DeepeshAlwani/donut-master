@@ -3,8 +3,9 @@ tensorboardx
 timm
 torch
 torch-vision
-transformers datasets sentencepiece
-pytorch-lightning wandb
+transformers
+datasets
+sentencepiece
 sconf
 donut-python
 pytorch-lightning==2.0.7
