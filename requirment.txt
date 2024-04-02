@@ -1,12 +1,8 @@
-numpy
 boto3
-requests
-tensorboard
+transformers
+tesorboard
 tensorboardx
 datasets
-sentencepiece
-sconf
-donut-python
-timm==0.5.4
-pytorch-lightning==1.6.4
-transformers==4.11.3
+pytorch-lightning
+pillow
+nltk
