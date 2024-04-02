@@ -1,5 +1,4 @@
 numpy
-donut
 boto3
 requests
 tokenizers
