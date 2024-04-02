@@ -1,5 +1,10 @@
 #!/bin/bash
 
+sudo yum install -y amazon-linux-extras
+
+sudo amazon-linux-extras install epel -y
+sudo yum-config-manager --enable epel
+sudo yum install git-lfs
 # Install Poppler (PDF rendering library) if not already installed
 
 # Path to the requirements.txt file
@@ -14,6 +19,10 @@ fi
 pip install huggingface-cli
 
 huggingface-cli login --token $3
+
+git lfs install
+
+git clone https://huggingface.co/DeepeshAlwani/donut-demo
 
 # Install libraries listed in requirements.txt
 pip install -r donut-master/requirment.txt
