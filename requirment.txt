@@ -1,7 +1,6 @@
 numpy
 boto3
 requests
-tokenizers
 tensorboard
 tensorboardx
 datasets
