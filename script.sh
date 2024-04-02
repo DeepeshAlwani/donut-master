@@ -8,7 +8,7 @@ fi
 
 
 # Path to the requirements.txt file
-REQUIREMENTS_FILE="requirment.txt"
+REQUIREMENTS_FILE="donut-master/requirment.txt"
 
 # Check if requirements.txt exists
 if [ ! -f "$REQUIREMENTS_FILE" ]; then
@@ -26,16 +26,16 @@ pip install huggingface-cli
 huggingface-cli login --token $3
 
 # Install libraries listed in requirements.txt
-pip install -r requirment.txt
+pip install -r donut-master/requirment.txt
 
-DOWNLOAD_FILE="download_training_data.py"
+DOWNLOAD_FILE="donut-master/download_training_data.py"
 
 python "$DOWNLOAD_FILE" $1 $2
 
-DATASET_FILE="run_donut.py"
+DATASET_FILE="donut-master/run_donut.py"
 
 python "$DATASET_FILE"
 
-TRAINER_FILE="donut_training.py"
+TRAINER_FILE="donut-master/donut_training.py"
 
 python "$TRAINER_FILE"
