@@ -1,11 +1,6 @@
 #!/bin/bash
 
 # Install Poppler (PDF rendering library) if not already installed
-if ! command -v pdftoppm &> /dev/null; then
-    echo "Installing Poppler..."
-    sudo yum install -y poppler-utils
-fi
-
 
 # Path to the requirements.txt file
 REQUIREMENTS_FILE="donut-master/requirment.txt"
