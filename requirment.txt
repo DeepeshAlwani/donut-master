@@ -1,8 +1,6 @@
 tensorboard
 tensorboardx
 timm
-torch
-torch-vision
 transformers
 datasets
 sentencepiece
