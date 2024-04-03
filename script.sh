@@ -4,6 +4,9 @@ curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.rpm.s
 
 sudo yum install git-lfs
 git lfs install
+y
+y
+
 git lfs version
 
 
@@ -15,10 +18,6 @@ if [ ! -f "$REQUIREMENTS_FILE" ]; then
     echo "requirements.txt not found"
     exit 1
 fi
-
-pip install huggingface-cli
-
-huggingface-cli login --token $3
 
 git lfs install
 
