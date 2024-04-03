@@ -1,10 +1,7 @@
-from pathlib import Path
 import os
-import shutil
-import random
-from datasets import load_dataset
-import json
+from pathlib import Path
 import cv2
+import json
 import shutil
 
 class DonutMetadataGenerator:
@@ -17,25 +14,20 @@ class DonutMetadataGenerator:
 
         for file_name in files_list:
             file_name_img = base_img_dir_path.joinpath(f"{file_name.stem}.jpg")
-            #print(f"{split} its in {file_name_img}")
-            shutil.copy2(file_name_img, Path(rst_dir).joinpath(f"{split}"))
-            img = cv2.imread(str(file_name_img))
-            cv2.imwrite(str(img_dir_path.joinpath(f"{file_name.stem}.jpg")), img)
+            try:
+                with open(file_name, "r", encoding="latin1") as json_file:
+                    data = json.load(json_file)
+                    line = {"gt_parse": data}
+                    text = json.dumps(line)
+                    if img_dir_path.joinpath(f"{file_name.stem}.jpg").is_file():
+                        shutil.copy2(file_name_img, Path(rst_dir).joinpath(f"{split}"))
+                        metadata_list.append({
+                            "ground_truth": text,
+                            "file_name": f"{file_name.stem}.jpg"
+                        })
+            except json.JSONDecodeError:
+                print(f"Skipping file {file_name} as it could not be loaded as JSON.")
 
-            with open(file_name, "r") as json_file:
-                data = json.load(json_file)
-                # print(data)
-                # print(file_name)
-                line = {"gt_parse": data}
-                text = json.dumps(line)
-                #print(img_dir_path.joinpath(f"{file_name.stem}.jpg"))
-                if img_dir_path.joinpath(f"{file_name.stem}.jpg").is_file():
-                    
-                    metadata_list.append({
-                        "ground_truth": text,
-                        "file_name": f"{file_name.stem}.jpg"
-                    })
-        
         with open(Path(Path(rst_dir).joinpath(f"{split}")).joinpath("metadata.jsonl"), "w") as outfile:
             for entry in metadata_list:
                 json.dump(entry, outfile)
