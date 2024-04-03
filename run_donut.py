@@ -43,7 +43,7 @@ class DonutMetadataGenerator:
 
 def main():
     # Convert to Donut format
-    base_path = 'downloadedfiles'
+    base_path = 'downloadfiles'
     rst_path = 'dataset'
     os.makedirs(rst_path, exist_ok=True)
     data_dir_path = Path(base_path).joinpath("json")
