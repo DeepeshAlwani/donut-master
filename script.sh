@@ -1,11 +1,11 @@
 #!/bin/bash
 
-sudo yum install -y amazon-linux-extras
+curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.rpm.sh | sudo bash
 
-sudo amazon-linux-extras install epel -y
-sudo yum-config-manager --enable epel
 sudo yum install git-lfs
-# Install Poppler (PDF rendering library) if not already installed
+git lfs install
+git lfs version
+
 
 # Path to the requirements.txt file
 REQUIREMENTS_FILE="donut-master/requirment.txt"
