@@ -21,6 +21,7 @@ git lfs install
 
 git clone https://huggingface.co/DeepeshAlwani/donut-demo
 
+wait
 # Install libraries listed in requirements.txt
 pip install -r donut-master/requirment.txt
 
