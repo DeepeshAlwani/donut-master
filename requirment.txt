@@ -1,6 +1,6 @@
 boto3
 transformers
-tesorboard
+tensorboard
 tensorboardx
 datasets
 pytorch-lightning
