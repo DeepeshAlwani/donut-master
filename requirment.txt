@@ -7,4 +7,3 @@ pytorch-lightning
 pillow
 nltk
 opencv-python
-shutil
