@@ -1,12 +1,12 @@
 #!/bin/bash
 
-curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.rpm.sh | sudo bash
-
+sudo yum install -y amazon-linux-extras
+sudo amazon-linux-extras install epel -y
+sudo yum-config-manager --enable epel
 sudo yum install git-lfs
+y
+y
 git lfs install
-y
-y
-
 git lfs version
 
 
