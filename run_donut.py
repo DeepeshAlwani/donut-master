@@ -47,6 +47,7 @@ def main():
     rst_path = 'dataset'
     os.makedirs(rst_path, exist_ok=True)
     data_dir_path = Path(base_path).joinpath("json")
+    print(data_dir_path)
     files = data_dir_path.glob("*.json")
     files_list = [file for file in files]
     # split files_list array into 3 parts, 80% train, 20% validation
