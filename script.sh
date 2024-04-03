@@ -1,12 +1,5 @@
 #!/bin/bash
 
-sudo yum install -y amazon-linux-extras
-sudo amazon-linux-extras install epel -y
-sudo yum-config-manager --enable epel
-sudo yum install -y git-lfs
-git lfs install
-git lfs version
-
 
 # Path to the requirements.txt file
 REQUIREMENTS_FILE="donut-master/requirment.txt"
@@ -17,11 +10,6 @@ if [ ! -f "$REQUIREMENTS_FILE" ]; then
     exit 1
 fi
 
-git lfs install
-
-git clone https://huggingface.co/DeepeshAlwani/donut-demo
-
-wait
 # Install libraries listed in requirements.txt
 pip install -r donut-master/requirment.txt
 
