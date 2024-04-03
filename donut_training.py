@@ -1,8 +1,8 @@
-pretrained_model_path = ("donut") 
+pretrained_model_path = ("../donut-demo") 
 
 from datasets import load_dataset
 
-dataset = load_dataset("dataset")
+dataset = load_dataset("../dataset")
 dataset
 example = dataset['train'][0]
 image = example['image']
