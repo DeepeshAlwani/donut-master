@@ -38,19 +38,22 @@ def main():
     base_path = 'downloadfiles'
     rst_path = 'dataset'
     os.makedirs(rst_path, exist_ok=True)
-    data_dir_path = Path(base_path).joinpath("json")
-    print(data_dir_path)
-    files = data_dir_path.glob("*.json")
-    files_list = [file for file in files]
-    # split files_list array into 3 parts, 80% train, 20% validation
-    train_files_list = files_list[:int(len(files_list) * 0.80)]
-    print("Train set size:", len(train_files_list))
-    validation_files_list = files_list[int(len(files_list) * 0.80):int(len(files_list) * 1.0)]
-    print("Validation set size:", len(validation_files_list))
-
-    metadata_generator = DonutMetadataGenerator()
-    metadata_generator.generate(base_path,rst_path,train_files_list, "train")
-    metadata_generator.generate(base_path,rst_path,validation_files_list, "validation")
+    if os.path.exists(base_path):
+        data_dir_path = Path(base_path).joinpath("json")
+        print(data_dir_path)
+        files = data_dir_path.glob("*.json")
+        files_list = [file for file in files]
+        # split files_list array into 3 parts, 80% train, 20% validation
+        train_files_list = files_list[:int(len(files_list) * 0.80)]
+        print("Train set size:", len(train_files_list))
+        validation_files_list = files_list[int(len(files_list) * 0.80):int(len(files_list) * 1.0)]
+        print("Validation set size:", len(validation_files_list))
+    
+        metadata_generator = DonutMetadataGenerator()
+        metadata_generator.generate(base_path,rst_path,train_files_list, "train")
+        metadata_generator.generate(base_path,rst_path,validation_files_list, "validation")
+    else:
+        print("No data available. Terminating the process.")
 
 if __name__ == '__main__':
     main()
