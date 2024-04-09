@@ -4,6 +4,8 @@ from botocore.exceptions import NoCredentialsError
 from collections import defaultdict
 import requests
 import sys
+import shutil
+import json
 
 # Define global variables
 table_name = 'AnnotationsInfo'
@@ -16,6 +18,21 @@ if len(sys.argv) != 3:
     sys.exit(1)
 AWS_ACCESS_KEY_ID = sys.argv[1]
 AWS_SECRET_ACCESS_KEY = sys.argv[2]
+
+def update_status_in_dynamodb(org_id, annotation_key, status):
+    dynamodb = boto3.client('dynamodb', region_name=AWS_REGION,
+                            aws_access_key_id=AWS_ACCESS_KEY_ID,
+                            aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
+    
+    response = dynamodb.update_item(
+        TableName=table_name,
+        Key={'orgId': {'S': org_id}, 'annotationKey': {'S': annotation_key}},
+        UpdateExpression='SET #status = :status',
+        ExpressionAttributeNames={'#status': 'status'},
+        ExpressionAttributeValues={':status': {'S': f'{status}'}}
+    )
+
+    print(f"Updated status for orgId {org_id} and annotationKey {annotation_key}")
 
 def count_entries_by_vendor():
     # Create a DynamoDB client with specified credentials
@@ -38,8 +55,9 @@ def count_entries_by_vendor():
         if count > 45:
             response = dynamodb.scan(
                 TableName=table_name,
-                FilterExpression='vendorName = :vendor',
-                ExpressionAttributeValues={':vendor': {'S': vendor}}
+                FilterExpression='vendorName = :vendor and #status = :status',
+                ExpressionAttributeValues={':vendor': {'S': vendor}, ':status': {'S': 'notUsedForTraining'}},
+                ExpressionAttributeNames={'#status': 'status'}
             )
             urls_dict[vendor] = []
             items = response.get('Items', [])
@@ -47,7 +65,8 @@ def count_entries_by_vendor():
                 s3_url = item.get('s3Url', {}).get('S')
                 json_url = item.get('jsonUrl', {}).get('S')
                 annotation_key = item.get('annotationKey',{}).get('S')
-                urls_dict[vendor].append({'s3Url': s3_url, 'jsonUrl': json_url, 'annotationKey':annotation_key})
+                org_id = item.get('orgId',{}).get('S')
+                urls_dict[vendor].append({'s3Url': s3_url, 'jsonUrl': json_url, 'orgId': org_id ,'annotationKey':annotation_key})
 
     return urls_dict
 def download_jpeg_files(urls_dict, folder_name):
@@ -77,6 +96,7 @@ def download_jpeg_files(urls_dict, folder_name):
             print(presigned_url)
             with open(file_path, 'wb') as f:
                 f.write(response.content)
+            update_status_in_dynamodb(urls['orgId'], urls['annotationKey'], status = 'Complete')
 
 def download_json_files(urls_dict, folder_name):
     # Create a new S3 client
@@ -104,7 +124,44 @@ def download_json_files(urls_dict, folder_name):
             # Download the file from S3
             with open(file_path, 'wb') as f:
                 f.write(response.content)
-
+def key_file_checker(urls_dict):
+    json_list_path = 'downloadfiles/json'
+    jpeg_list_path = 'downloadfiles/jpeg'
+    json_file_list = os.listdir(json_list_path)
+    jpeg_file_list = os.listdir(jpeg_list_path)
+    for file in json_file_list:
+        json_path = os.path.join(json_list_path,file)
+        with open(json_path, 'r') as f:
+            data = json.load(f)
+        if len(data['header']) <3:
+            for item in urls_dict:
+                file = file[:-5]
+                if file in item['annotationKey']:
+                    orgId = item['orgId']
+                    annotationKey = item['annotationKey']
+                    status = 'Failed'
+                    update_status_in_dynamodb(orgId, annotationKey, status)
+                    for jpeg in jpeg_file_list:
+                        if file in jpeg:
+                            jpeg_path = os.path.join(jpeg_list_path, jpeg)
+                            os.remove(jpeg_path)
+                            os.remove(json_path)
+        for item in data['items']:
+            if len(item) >=4:
+                pass
+            else:
+                for item in urls_dict:
+                    file = file[:-5]
+                    if file in item['annotationKey']:
+                        orgId = item['orgId']
+                        annotationKey = item['annotationKey']
+                        status = 'Failed'
+                        update_status_in_dynamodb(orgId, annotationKey, status)
+                        for jpeg in jpeg_file_list:
+                            if file in jpeg:
+                                jpeg_path = os.path.join(jpeg_list_path, jpeg)
+                                os.remove(jpeg_path)
+                                os.remove(json_path)
 # Example usage
 urls_dict = count_entries_by_vendor()
 for vendor, urls_list in urls_dict.items():
@@ -116,3 +173,5 @@ for vendor, urls_list in urls_dict.items():
 download_jpeg_files(urls_dict, 'images')
 
 download_json_files(urls_dict, 'json')
+
+key_file_checker(urls_dict)
