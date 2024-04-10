@@ -18,6 +18,7 @@ if len(sys.argv) != 3:
     sys.exit(1)
 AWS_ACCESS_KEY_ID = sys.argv[1]
 AWS_SECRET_ACCESS_KEY = sys.argv[2]
+THRESHOLD = sys.argv[3]
 
 def update_status_in_dynamodb(org_id, annotation_key, status):
     dynamodb = boto3.client('dynamodb', region_name=AWS_REGION,
@@ -52,7 +53,7 @@ def count_entries_by_vendor():
 
     urls_dict = {}
     for vendor, count in vendor_counts.items():
-        if count > 45:
+        if count > THRESHOLD:
             response = dynamodb.scan(
                 TableName=table_name,
                 FilterExpression='vendorName = :vendor and #status = :status',
