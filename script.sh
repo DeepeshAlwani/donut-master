@@ -15,7 +15,7 @@ pip install -r donut-master/requirment.txt
 
 DOWNLOAD_FILE="donut-master/download_training_data.py"
 
-python "$DOWNLOAD_FILE" $1 $2 $4
+python "$DOWNLOAD_FILE" $1 $2 $3
 
 DATASET_FILE="donut-master/run_donut.py"
 
