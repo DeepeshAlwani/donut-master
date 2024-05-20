@@ -349,12 +349,12 @@ tensorboard_logger = TensorBoardLogger("logs", name="Donut-demo-run-cord")
 class PushToHubCallback(Callback):
 	def on_train_epoch_end(self, trainer, pl_module):
 		print(f"Pushing model to the hub, epoch {trainer.current_epoch}")
-		pl_module.model.push_to_hub("DeepeshAlwani/donut",commit_message=f"Training in progress, epoch {trainer.current_epoch}")
+		pl_module.model.push_to_hub("DeepeshAlwani/trial",commit_message=f"Training in progress, epoch {trainer.current_epoch}")
 
 	def on_train_end(self, trainer, pl_module):
 		print(f"Pushing model to the hub after training")
-		pl_module.processor.push_to_hub("DeepeshAlwani/donut",commit_message=f"Training done")
-		pl_module.model.push_to_hub("DeepeshAlwani/donut",commit_message=f"Training done")
+		pl_module.processor.push_to_hub("DeepeshAlwani/trial",commit_message=f"Training done")
+		pl_module.model.push_to_hub("DeepeshAlwani/trial",commit_message=f"Training done")
 
      
 
