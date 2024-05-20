@@ -13,7 +13,7 @@ column_name = 'vendorName'
 AWS_REGION = 'us-east-1'
 download_folder = 'downloadfiles'
 S3_BUCKET_NAME = 'cf-ai-test2'
-if len(sys.argv) != 3:
+if len(sys.argv) != 4:
     print("Usage: python script.py <json_path>")
     sys.exit(1)
 AWS_ACCESS_KEY_ID = sys.argv[1]
