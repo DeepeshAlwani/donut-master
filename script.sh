@@ -28,7 +28,7 @@ elif [ "$arg4" == "donut_dwg" ]; then
       pythonn "$DOWNLOAD_FILE_DWG" $1 $2 $3
       
 else
-  echo "Invalid argument provided. Please use 'donut-invoice' or 'donut-dwg' as the 4th argument."
+  echo "Invalid argument provided. Please use 'donut_invoice' or 'donut_dwg' as the 4th argument."
 fi
 
 DATASET_FILE="donut-master/run_donut.py"
