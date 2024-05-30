@@ -23,7 +23,7 @@ elif [ "$arg4" == "donut_dwg" ]; then
     # Run specific scripts for 'donut-dwg'
     GENERATE_FILE_DWG="donut-master/generate_data_for_dwg.py"
     python "$GENERATE_FILE_DWG" "$1" "$2"
-    DOWNLOAD_FILE_DWG="donut-master/donwload_data_for_training_dwg.py"
+    DOWNLOAD_FILE_DWG="donut-master/download_data_for_training_dwg.py"
     python "$DOWNLOAD_FILE_DWG" "$1" "$2" "$3"
 else
     echo "Invalid argument provided. Please use 'donut_invoice' or 'donut_dwg' as the 4th argument."
