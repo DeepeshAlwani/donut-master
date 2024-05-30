@@ -9,7 +9,7 @@ if len(sys.argv) !=4:
     sys.exit(1)
 AWS_ACCESS_KEY_ID = sys.argv[1]
 AWS_SECRET_ACCESS_KEY = sys.argv[2]
-THRESHOLD = sys.argv[3]
+THRESHOLD = int(sys.argv[3])
 AWS_REGION = 'us-east-1'
 TABLE_NAME = 'DwgHdrInfo'
 download_folder = r"downloadfiles"
