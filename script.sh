@@ -22,7 +22,7 @@ if [ $4 == "donut_invoice" ]; then
 
     # Run specific scripts for 'donut-dwg'
 elif [ $4 == "donut_dwg" ]; then
-    GENERATE_DATA = "donut-master/generate_data_dor_dwg.py"
+    GENERATE_DATA = "donut-master/generate_data_for_dwg.py"
     python "$GENERATE_DATA" $1 $2
     DOWNLOAD_FILE_DWG="donut-master/download_data_for_training_dwg.py"
     python "$DOWNLOAD_FILE_DWG" $1 $2 $3
