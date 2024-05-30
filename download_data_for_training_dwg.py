@@ -12,7 +12,7 @@ AWS_SECRET_ACCESS_KEY = sys.argv[2]
 THRESHOLD = sys.argv[3]
 AWS_REGION = 'us-east-1'
 TABLE_NAME = 'DwgHdrInfo'
-download_folder = r"download"
+download_folder = r"downloadfiles"
 S3_BUCKET_NAME = 'cf-ai-test2'
 
 def fetch_urls_from_dynamodb():
