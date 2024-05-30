@@ -18,12 +18,12 @@ arg4=$4
 # Conditional statements to check the value of the 4th argument
 if [ "$arg4" == "donut-invoice" ]; then
   # Run specific scripts for 'donut-invoice'
-    DOWNLOAD_FILE="donut-master/download_training_data.py"
-    python "$DOWNLOAD_FILE" $1 $2 $3
+    DOWNLOAD_FILE_INVOICE="donut-master/download_training_data.py"
+    python "$DOWNLOAD_FILE_INVOICE" $1 $2 $3
 elif [ "$arg4" == "donut-dwg" ]; then
   # Run specific scripts for 'donut-dwg'
-  python3 script3.py
-  python3 script4.py
+      DOWNLOAD_FILE_DWG = "donut-master/generate_data_for_dwg.py"
+      python "$DOWNLOAD_FILE_DWG" $1 $2 $3
 else
   echo "Invalid argument provided. Please use 'donut-invoice' or 'donut-dwg' as the 4th argument."
 fi
