@@ -22,8 +22,11 @@ if [ "$arg4" == "donut-invoice" ]; then
     python "$DOWNLOAD_FILE_INVOICE" $1 $2 $3
 elif [ "$arg4" == "donut-dwg" ]; then
   # Run specific scripts for 'donut-dwg'
-      DOWNLOAD_FILE_DWG = "donut-master/generate_data_for_dwg.py"
-      python "$DOWNLOAD_FILE_DWG" $1 $2 $3
+      GENERATE_FILE_DWG = "donut-master/generate_data_for_dwg.py"
+      python "$GENERATE_FILE_DWG" $1 $2
+      DOWNLOAD_FILE_DWG = "donut-master/donwload_data_for_training_dwg.py"
+      pythonn "$DOWNLOAD_FILE_DWG" $1 $2 $3
+      
 else
   echo "Invalid argument provided. Please use 'donut-invoice' or 'donut-dwg' as the 4th argument."
 fi
