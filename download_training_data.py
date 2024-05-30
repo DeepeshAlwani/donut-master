@@ -165,6 +165,9 @@ def key_file_checker(urls_dict):
                                 os.remove(json_path)
 # Example usage
 urls_dict = count_entries_by_vendor()
+if len(urls_dict) <1:
+    print("No records to fetch exiting the script")
+    exit()
 for vendor, urls_list in urls_dict.items():
     print(f"Vendor: {vendor}")
     for urls in urls_list:
