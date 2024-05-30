@@ -5,7 +5,8 @@ import requests
 import urllib.parse
 import io
 import requests
-import fitz  # PyMuPDF
+from PIL import Image
+from pdf2image import convert_from_bytes # PyMuPDF
 from boto3.dynamodb.conditions import Attr
 
 DYNAMODB_TABLE_NAME = 'DwgHdrInfo'
@@ -116,28 +117,30 @@ def create_json_data_and_upload_to_s3(titleVal, numVal, docId, pageNum, filename
 
 def create_jpeg_and_upload_to_s3(pdf_bytes, pageNum, docId, filename):
     pageNum = int(pageNum)
-    pdf_document = fitz.open(stream=pdf_bytes, filetype="pdf")
-        
-
-    page = pdf_document.load_page(pageNum)
-    pix = page.get_pixmap()
-    image = pix.tobytes("jpeg")
-    #image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
-
+    
+    # Convert the specific page to an image (pageNum starts from 0, pdf2image expects 1-based index)
+    images = convert_from_bytes(pdf_bytes, first_page=pageNum + 1, last_page=pageNum + 1)
+    image = images[0]
+    
+    # Convert the image to JPEG format
+    jpeg_bytes = io.BytesIO()
+    image.save(jpeg_bytes, format="JPEG")
+    jpeg_bytes.seek(0)
+    
     filename = filename.split(".")[0]
     s3 = boto3.client('s3', region_name=AWS_REGION, aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
     
     # Construct the S3 object key
     s3_object_key = f"drawing/{docId}/{pageNum}/jpeg/{filename}.jpg"
     
-    # Upload the JSON data to S3
-    s3.put_object(Bucket=S3_BUCKET_NAME1, Key=s3_object_key, Body=image)
+    # Upload the JPEG data to S3
+    s3.put_object(Bucket=S3_BUCKET_NAME1, Key=s3_object_key, Body=jpeg_bytes)
     
     # Generate a presigned URL
     jpeg_url_presigned = s3.generate_presigned_url(
         'get_object',
         Params={'Bucket': S3_BUCKET_NAME1, 'Key': s3_object_key},
-        ExpiresIn=5 * 365 * 24 * 60 * 60 
+        ExpiresIn=5 * 365 * 24 * 60 * 60
     )
     
     # Construct the updated S3 URL
@@ -174,7 +177,6 @@ def update_data_in_dynamodb(pageNum,docId, updated_s3_url, jpeg_url,json_url):
 
 
 s3url_org_doc_ids = get_pdf_s3_url()
-print(s3url_org_doc_ids)
 if len(s3url_org_doc_ids) <1:
     print("No records to fetch exiting the script")
     exit()
@@ -189,11 +191,12 @@ for dict in s3url_org_doc_ids:
         response = requests.get(signed_url)
         response.raise_for_status()
         updated_s3_url =  upload_file_to_s3(filename, response.content, pageNum, docId)
-        pdf_bytes = io.BytesIO(response.content)
+        pdf_bytes_io = io.BytesIO(response.content)
+        pdf_bytes = pdf_bytes_io.read()
         jpeg_url = create_jpeg_and_upload_to_s3(pdf_bytes, pageNum, docId,filename)
         json_url = create_json_data_and_upload_to_s3(titleVal, numVal, docId, pageNum, filename)
-        response = update_data_in_dynamodb(pageNum,docId, updated_s3_url, jpeg_url,json_url)
-        print(response)
+        request = update_data_in_dynamodb(pageNum,docId, updated_s3_url, jpeg_url,json_url)
+        print(request)
         
     except Exception as e:
         pass
