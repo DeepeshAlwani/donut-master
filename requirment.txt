@@ -7,3 +7,6 @@ pytorch-lightning
 pillow
 nltk
 opencv-python
+fitz
+PyMuPDF
+PyPDF2
