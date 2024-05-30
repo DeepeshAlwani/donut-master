@@ -10,3 +10,4 @@ opencv-python
 fitz
 PyMuPDF
 PyPDF2
+frontend
