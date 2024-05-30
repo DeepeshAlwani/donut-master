@@ -16,11 +16,11 @@ pip install -r donut-master/requirment.txt
 arg4=$4
 
 # Conditional statements to check the value of the 4th argument
-if [ "$arg4" == "donut-invoice" ]; then
+if [ "$arg4" == "donut_invoice" ]; then
   # Run specific scripts for 'donut-invoice'
     DOWNLOAD_FILE_INVOICE="donut-master/download_training_data.py"
     python "$DOWNLOAD_FILE_INVOICE" $1 $2 $3
-elif [ "$arg4" == "donut-dwg" ]; then
+elif [ "$arg4" == "donut_dwg" ]; then
   # Run specific scripts for 'donut-dwg'
       GENERATE_FILE_DWG = "donut-master/generate_data_for_dwg.py"
       python "$GENERATE_FILE_DWG" $1 $2
