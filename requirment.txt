@@ -7,5 +7,5 @@ pytorch-lightning
 pillow
 nltk
 opencv-python
-pdf2images
+pdf2image
 requests
