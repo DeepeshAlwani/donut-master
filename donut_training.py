@@ -1,9 +1,19 @@
-pretrained_model_path = ("donut-demo") 
+import sys
+import os
+if len(sys.args) <2:
+	print("please provide the model name you want to train donut-invoice or donut-dwg")
+	sys.exit(1)
+
+model_name = sys.argv[1]
+
+pretrained_model_path = (model_name) 
 
 from datasets import load_dataset
+if not os.path.isdir(r"dataset"):
+    print(f"Directory 'dataset' does not exist.")
+    sys.exit(1)
 
 dataset = load_dataset(r"dataset")
-dataset
 example = dataset['train'][0]
 image = example['image']
 # let's make the image a bit smaller when visualizing
@@ -349,12 +359,12 @@ tensorboard_logger = TensorBoardLogger("logs", name="Donut-demo-run-cord")
 class PushToHubCallback(Callback):
 	def on_train_epoch_end(self, trainer, pl_module):
 		print(f"Pushing model to the hub, epoch {trainer.current_epoch}")
-		pl_module.model.push_to_hub("DeepeshAlwani/trial",commit_message=f"Training in progress, epoch {trainer.current_epoch}")
+		pl_module.model.push_to_hub(f"DeepeshAlwani/{model_name}",commit_message=f"Training in progress, epoch {trainer.current_epoch}")
 
 	def on_train_end(self, trainer, pl_module):
 		print(f"Pushing model to the hub after training")
-		pl_module.processor.push_to_hub("DeepeshAlwani/trial",commit_message=f"Training done")
-		pl_module.model.push_to_hub("DeepeshAlwani/trial",commit_message=f"Training done")
+		pl_module.processor.push_to_hub(f"DeepeshAlwani/{model_name}",commit_message=f"Training done")
+		pl_module.model.push_to_hub(f"DeepeshAlwani/{model_name}",commit_message=f"Training done")
 
      
 
