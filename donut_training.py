@@ -1,6 +1,6 @@
 import sys
 import os
-if len(sys.args) <2:
+if len(sys.argv) <2:
 	print("please provide the model name you want to train donut-invoice or donut-dwg")
 	sys.exit(1)
 
