@@ -2,6 +2,8 @@ import boto3
 import requests
 import os
 import sys
+import random
+import string
 from boto3.dynamodb.conditions import Attr
 
 if len(sys.argv) !=4:
@@ -14,6 +16,10 @@ AWS_REGION = 'us-east-1'
 TABLE_NAME = 'DwgHdrInfo'
 download_folder = r"downloadfiles"
 S3_BUCKET_NAME = 'cf-ai-test2'
+
+def generate_alphanumeric_string(length=6):
+    characters = string.ascii_letters + string.digits
+    return ''.join(random.choice(characters) for _ in range(length))
 
 def fetch_urls_from_dynamodb():
     # Initialize a session using Amazon DynamoDB resource
@@ -50,7 +56,7 @@ def update_status_in_dynamodb(pageNum, docId, status):
 
     print(f"Updated status for pageNum {pageNum} and docId {docId}")
 
-def download_jpeg_files(urls, folder_name):
+def download_jpeg_files(urls, folder_name, rand):
     try:
 
     # Create a new S3 client
@@ -70,7 +76,9 @@ def download_jpeg_files(urls, folder_name):
                                         Params={'Bucket': S3_BUCKET_NAME, 'Key': key},
                                         ExpiresIn=360)
         response = requests.get(presigned_url)
-        filename = s3_url.split('/')[-1]  # Get the filename from the URL
+        filename = s3_url.split('/')[-1]
+        filename = filename.split('.')[0]
+        filename = filename + "-" + rand + ".jpg"  # Get the filename from the URL
         file_path = os.path.join(download_folder, folder_name)
         os.makedirs(file_path, exist_ok=True)
         file_path = os.path.join(file_path, filename)
@@ -81,7 +89,7 @@ def download_jpeg_files(urls, folder_name):
         update_status_in_dynamodb(urls['pageNum'], urls['docId'], status = 'Complete')
     except Exception as e:
         print(e)
-def download_json_files(urls, folder_name):
+def download_json_files(urls, folder_name, rand):
     # Create a new S3 client
     s3 = boto3.client('s3', region_name=AWS_REGION,
                       aws_access_key_id=AWS_ACCESS_KEY_ID,
@@ -100,6 +108,8 @@ def download_json_files(urls, folder_name):
                                     ExpiresIn=360)
     response = requests.get(presigned_url)
     filename = s3_url.split('/')[-1]
+    filename = filename.split('.')[0]
+    filename = filename + "-" + rand + ".json"
     print(filename)  # Get the filename from the URL
     file_path = os.path.join(download_folder, folder_name)
     os.makedirs(file_path, exist_ok=True)
@@ -115,6 +125,7 @@ if len(urls) <THRESHOLD:
     exit()
 for dic in urls:
     #print(dic["jpegUrl"])
-    download_jpeg_files(dic, 'images')
-    download_json_files(dic, 'json')
+    rand = generate_alphanumeric_string()
+    download_jpeg_files(dic, 'images',rand)
+    download_json_files(dic, 'json', rand)
     
