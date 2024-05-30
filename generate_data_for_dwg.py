@@ -175,6 +175,7 @@ def update_data_in_dynamodb(pageNum,docId, updated_s3_url, jpeg_url,json_url):
 
 
 s3url_org_doc_ids = get_pdf_s3_url()
+print(s3url_org_doc_ids)
 if len(s3url_org_doc_ids) <1:
     print("No records to fetch exiting the script")
     exit()
