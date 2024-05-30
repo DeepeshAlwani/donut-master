@@ -5,7 +5,6 @@ import requests
 import urllib.parse
 import io
 import requests
-from PIL import Image
 import fitz  # PyMuPDF
 from boto3.dynamodb.conditions import Attr
 
