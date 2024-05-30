@@ -4,11 +4,12 @@ import os
 import sys
 from boto3.dynamodb.conditions import Attr
 
-if len(sys.argv) != 3:
+if len(sys.argv) !=4:
     print("Usage: python script.py <json_path>")
     sys.exit(1)
 AWS_ACCESS_KEY_ID = sys.argv[1]
 AWS_SECRET_ACCESS_KEY = sys.argv[2]
+THRESHOLD = sys.argv[3]
 AWS_REGION = 'us-east-1'
 TABLE_NAME = 'DwgHdrInfo'
 download_folder = r"download"
@@ -109,8 +110,8 @@ def download_json_files(urls, folder_name):
 
 
 urls = fetch_urls_from_dynamodb()
-if len(urls) <1:
-    print("Dictionary is empty. Stopping the script.")
+if len(urls) <THRESHOLD:
+    print("Not enough records aborting...")
     exit()
 for dic in urls:
     #print(dic["jpegUrl"])
