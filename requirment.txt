@@ -8,4 +8,4 @@ pillow
 nltk
 opencv-python
 pdf2image
-requests
+requests==2.31.0
