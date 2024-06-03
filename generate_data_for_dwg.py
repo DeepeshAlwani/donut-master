@@ -1,8 +1,6 @@
 import boto3
 import sys
 import json
-import requests
-import urllib.parse
 import io
 from PIL import Image
 from pdf2image import convert_from_bytes
@@ -43,27 +41,17 @@ def get_pdf_s3_url():
         })
     return s3url_org_doc_ids
 
-def generate_signed_url(url, expiration=3600):
-    print(url)
-    position = url.find('//', 8) + 2  # Adding 2 to include the double slashes
-    object_key = url[position:]
-    print("Extracted object key:", object_key)
-    object_key = urllib.parse.unquote(object_key)
-    print("Decoded object key:", object_key)
-
+def download_file_from_s3(s3_url):
     s3_client = boto3.client('s3', region_name=AWS_REGION, aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
-
-    # Generate a pre-signed URL for the S3 object
-    presigned_url = s3_client.generate_presigned_url(
-        'get_object',
-        Params={
-            'Bucket': S3_BUCKET_NAME,
-            'Key': object_key,
-        },
-        ExpiresIn=expiration
-    )
+    position = s3_url.find('//', 8) + 2
+    object_key = s3_url[position:]
+    object_key = urllib.parse.unquote(object_key)
+    bucket_name = S3_BUCKET_NAME
+    file_obj = io.BytesIO()
+    s3_client.download_fileobj(bucket_name, object_key, file_obj)
+    file_obj.seek(0)
     filename = object_key.split("/")[-1]
-    return presigned_url, filename
+    return file_obj, filename
 
 def upload_file_to_s3(filename, data, pageNum, docId):
     s3 = boto3.client('s3', region_name=AWS_REGION, aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
@@ -174,28 +162,15 @@ if len(s3url_org_doc_ids) < 1:
     print("No records to fetch. Exiting the script.")
     exit()
 
-for dict in s3url_org_doc_ids:
-    pageNum = dict["page_num"]
-    docId = dict["doc_id"]
-    titleVal = dict["title_val"]
-    numVal = dict["num_val"]
-    signed_url, filename = generate_signed_url(dict["s3Url"])
-    try:
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-        }
-        response = requests.get(signed_url, headers=headers)
-        response.raise_for_status()
-        updated_s3_url = upload_file_to_s3(filename, response.content, pageNum, docId)
-        pdf_bytes_io = io.BytesIO(response.content)
-        pdf_bytes = pdf_bytes_io.read()
-        jpeg_url = create_jpeg_and_upload_to_s3(pdf_bytes, pageNum, docId, filename)
-        json_url = create_json_data_and_upload_to_s3(titleVal, numVal, docId, pageNum, filename)
-        request = update_data_in_dynamodb(pageNum, docId, updated_s3_url, jpeg_url, json_url)
-        print(request)
-        
-    except requests.exceptions.HTTPError as e:
-        print(f"HTTP error occurred: {e}")
-        print("Response content:", response.content)
-    except Exception as e:
-        print(f"Failed to complete the request: {e}")
+for item in s3url_org_doc_ids:
+    pageNum = item["page_num"]
+    docId = item["doc_id"]
+    titleVal = item["title_val"]
+    numVal = item["num_val"]
+    file_obj, filename = download_file_from_s3(item["s3Url"])
+    pdf_bytes = file_obj.read()
+    updated_s3_url = upload_file_to_s3(filename, pdf_bytes, pageNum, docId)
+    jpeg_url = create_jpeg_and_upload_to_s3(pdf_bytes, pageNum, docId, filename)
+    json_url = create_json_data_and_upload_to_s3(titleVal, numVal, docId, pageNum, filename)
+    request = update_data_in_dynamodb(pageNum, docId, updated_s3_url, jpeg_url, json_url)
+    print(request)
