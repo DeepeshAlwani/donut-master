@@ -36,3 +36,11 @@ python "$DATASET_FILE"
 
 TRAINER_FILE="donut-master/donut_training.py"
 python "$TRAINER_FILE" $4
+
+CONVERT_FILE="donut-master/convert_to_huggingface.py"
+python "$CONVERT_FILE" $4
+
+UPLOAD_MODEL="donut-master/save_model_to_s3.py"
+python "$UPLOAD_MODEL" $1 $2 $4
+
+
