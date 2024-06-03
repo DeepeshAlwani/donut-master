@@ -11,7 +11,7 @@ AWS_REGION = 'us-east-1'
 S3_BUCKET_NAME = 'cverse-dev'
 S3_BUCKET_NAME1 = 'cf-ai-test2'
 
-if len(sys.argv) != 3:
+if len(sys.argv) < 3:
     print("Usage: python script.py <AWS_ACCESS_KEY_ID> <AWS_SECRET_ACCESS_KEY>")
     sys.exit(1)
 
