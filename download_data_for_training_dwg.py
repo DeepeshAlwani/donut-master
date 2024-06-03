@@ -86,7 +86,7 @@ def download_jpeg_files(urls, folder_name, rand):
         print(presigned_url)
         with open(file_path, 'wb') as f:
             f.write(response.content)
-        update_status_in_dynamodb(urls['pageNum'], urls['docId'], status = 'Complete')
+        #update_status_in_dynamodb(urls['pageNum'], urls['docId'], status = 'Complete')
     except Exception as e:
         print(e)
 def download_json_files(urls, folder_name, rand):
