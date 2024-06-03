@@ -44,13 +44,13 @@ def get_pdf_s3_url():
     return s3url_org_doc_ids
 
 def generate_signed_url(url, expiration=3600):
+    print(url)
     position = url.find('//', 8) + 2  # Adding 2 to include the double slashes
     object_key = url[position:]
-    print(object_key)
+    print("Extracted object key:", object_key)
     object_key = urllib.parse.unquote(object_key)
-    print(object_key)
-    object_key = "/" + object_key
-    filename = object_key.split("/")[-1]
+    print("Decoded object key:", object_key)
+
     s3_client = boto3.client('s3', region_name=AWS_REGION, aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
 
     # Generate a pre-signed URL for the S3 object
@@ -62,6 +62,7 @@ def generate_signed_url(url, expiration=3600):
         },
         ExpiresIn=expiration
     )
+    filename = object_key.split("/")[-1]
     return presigned_url, filename
 
 def upload_file_to_s3(filename, data, pageNum, docId):
@@ -179,12 +180,11 @@ for dict in s3url_org_doc_ids:
     titleVal = dict["title_val"]
     numVal = dict["num_val"]
     signed_url, filename = generate_signed_url(dict["s3Url"])
-    #print(signed_url)
     try:
         headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
         }
-        response = requests.get(signed_url, headers=headers, stream=True, verify=False)
+        response = requests.get(signed_url, headers=headers)
         response.raise_for_status()
         updated_s3_url = upload_file_to_s3(filename, response.content, pageNum, docId)
         pdf_bytes_io = io.BytesIO(response.content)
@@ -194,8 +194,8 @@ for dict in s3url_org_doc_ids:
         request = update_data_in_dynamodb(pageNum, docId, updated_s3_url, jpeg_url, json_url)
         print(request)
         
-    except requests.exceptions.HTTPError as http_err:
-        print(f"HTTP error occurred: {http_err}")
-        print(f"Response content: {response.content}")
+    except requests.exceptions.HTTPError as e:
+        print(f"HTTP error occurred: {e}")
+        print("Response content:", response.content)
     except Exception as e:
-        print(f"An error occurred: {e}")
+        print(f"Failed to complete the request: {e}")
