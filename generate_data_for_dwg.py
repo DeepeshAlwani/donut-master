@@ -3,6 +3,7 @@ import sys
 import json
 import io
 from PIL import Image
+import urllib.parse
 from pdf2image import convert_from_bytes
 from boto3.dynamodb.conditions import Attr
 
@@ -10,11 +11,8 @@ DYNAMODB_TABLE_NAME = 'DwgHdrInfo'
 AWS_REGION = 'us-east-1'
 S3_BUCKET_NAME = 'cverse-dev'
 S3_BUCKET_NAME1 = 'cf-ai-test2'
-
-if len(sys.argv) < 3:
-    print("Usage: python script.py <AWS_ACCESS_KEY_ID> <AWS_SECRET_ACCESS_KEY>")
-    sys.exit(1)
-
+if len(sys.argv) <3:
+    print("please provide valid keys")
 AWS_ACCESS_KEY_ID = sys.argv[1]
 AWS_SECRET_ACCESS_KEY = sys.argv[2]
 
@@ -43,10 +41,14 @@ def get_pdf_s3_url():
 
 def download_file_from_s3(s3_url):
     s3_client = boto3.client('s3', region_name=AWS_REGION, aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
+    print(f"Original S3 URL: {s3_url}")
     position = s3_url.find('//', 8) + 2
     object_key = s3_url[position:]
     object_key = urllib.parse.unquote(object_key)
+    object_key = "/" + object_key
     bucket_name = S3_BUCKET_NAME
+    print(f"Parsed Object Key: {object_key}")
+    print(f"Bucket Name: {bucket_name}")
     file_obj = io.BytesIO()
     s3_client.download_fileobj(bucket_name, object_key, file_obj)
     file_obj.seek(0)
@@ -100,10 +102,26 @@ def create_json_data_and_upload_to_s3(titleVal, numVal, docId, pageNum, filename
 
 def create_jpeg_and_upload_to_s3(pdf_bytes, pageNum, docId, filename):
     pageNum = int(pageNum)
+    print(pageNum)
     
-    # Convert the specific page to an image (pageNum starts from 0, pdf2image expects 1-based index)
-    images = convert_from_bytes(pdf_bytes, first_page=pageNum + 1, last_page=pageNum + 1)
-    image = images[0]
+    # Ensure the PDF bytes are not empty
+    if not pdf_bytes:
+        print("Error: PDF bytes are empty.")
+        return None
+    
+    # Try converting the specific page to an image (pageNum starts from 0, pdf2image expects 1-based index)
+    try:
+        images = convert_from_bytes(pdf_bytes, first_page=pageNum, last_page=pageNum)
+        
+        if not images:
+            print(f"Error: No images extracted from page number {pageNum}.")
+            return None
+        
+        image = images[0]
+        
+    except Exception as e:
+        print(f"Error: Could not convert PDF to image. Exception: {e}")
+        return None
     
     # Convert the image to JPEG format
     jpeg_bytes = io.BytesIO()
@@ -132,6 +150,7 @@ def create_jpeg_and_upload_to_s3(pdf_bytes, pageNum, docId, filename):
     print(jpeg_url_presigned)
 
     return jpeg_url
+
 
 def update_data_in_dynamodb(pageNum, docId, updated_s3_url, jpeg_url, json_url):
     dynamodb = boto3.resource('dynamodb', region_name=AWS_REGION, aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
