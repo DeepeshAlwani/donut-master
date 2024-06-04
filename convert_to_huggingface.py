@@ -44,7 +44,7 @@ destination_dir = f"{model_name}-{formatted_date}"
 
 os.makedirs(destination_dir, exist_ok=True)
 
-ckpt_path = f"saved_model/{model_name}-{formatted_date}-v1.ckpt"
+ckpt_path = f"saved_model/{model_name}-{formatted_date}.ckpt"
 save_dir = destination_dir
 model_name_or_path = model_name
 
