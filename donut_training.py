@@ -219,10 +219,10 @@ checkpoint_callback = ModelCheckpoint(
     monitor="val_edit_distance",
     dirpath="saved_model",
     filename=f"{model_name}-{formatted_date}",
-    save_top_k=3,
+    save_top_k=1,  # Save only the best model
     mode="min",
+    save_last=True  # Save the last checkpoint
 )
-
 
 trainer = pl.Trainer(
     accelerator="gpu", devices=1,
