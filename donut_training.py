@@ -231,7 +231,6 @@ trainer = pl.Trainer(
     val_check_interval=config["val_check_interval"],
     check_val_every_n_epoch=config["check_val_every_n_epoch"],
     gradient_clip_val=config["gradient_clip_val"],
-    limit_train_batches=config["num_training_samples_per_epoch"],
     num_nodes=config["num_nodes"],
     logger=tensorboard_logger,
     callbacks=[early_stop_callback, checkpoint_callback]
