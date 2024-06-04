@@ -6,11 +6,12 @@ from boto3.dynamodb.conditions import Attr
 import random
 import string
 
-if len(sys.argv) < 3:
+if len(sys.argv) < 4:
     print("Usage: python script.py <json_path>")
     sys.exit(1)
 AWS_ACCESS_KEY_ID = sys.argv[1]
 AWS_SECRET_ACCESS_KEY = sys.argv[2]
+THRESHOLD = int(sys.argv[3])
 AWS_REGION = 'us-east-1'
 TABLE_NAME = 'DwgHdrInfo'
 download_folder = r"downloadfiles"
@@ -87,7 +88,7 @@ def download_jpeg_files(urls, folder_name, rand):
         print(presigned_url)
         with open(file_path, 'wb') as f:
             f.write(response.content)
-        #update_status_in_dynamodb(urls['pageNum'], urls['docId'], status = 'Complete')
+        update_status_in_dynamodb(urls['pageNum'], urls['docId'], status = 'Complete')
     except Exception as e:
         print(e)
 def download_json_files(urls, folder_name,rand):
@@ -121,7 +122,7 @@ def download_json_files(urls, folder_name,rand):
 
 
 urls = fetch_urls_from_dynamodb()
-if len(urls) <1:
+if len(urls) < THRESHOLD:
     print("Dictionary is empty. Stopping the script.")
     exit()
 for dic in urls:
