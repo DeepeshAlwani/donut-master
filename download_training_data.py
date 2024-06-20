@@ -147,7 +147,7 @@ def key_file_checker(urls_dict):
                             jpeg_path = os.path.join(jpeg_list_path, jpeg)
                             os.remove(jpeg_path)
                             os.remove(json_path)
-        for item in data['items']:
+        for item in data['item']:
             if len(item) >=4:
                 pass
             else:
