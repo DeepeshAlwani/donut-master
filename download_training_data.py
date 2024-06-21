@@ -70,6 +70,7 @@ def count_entries_by_vendor():
                 urls_dict[vendor].append({'s3Url': s3_url, 'jsonUrl': json_url, 'orgId': org_id ,'annotationKey':annotation_key})
 
     return urls_dict
+
 def download_jpeg_files(urls_dict, folder_name):
     # Create a new S3 client
     s3 = boto3.client('s3', region_name=AWS_REGION,
@@ -125,57 +126,64 @@ def download_json_files(urls_dict, folder_name):
             # Download the file from S3
             with open(file_path, 'wb') as f:
                 f.write(response.content)
+
 def key_file_checker(urls_dict):
     json_list_path = 'downloadfiles/json'
     jpeg_list_path = 'downloadfiles/images'
     json_file_list = os.listdir(json_list_path)
     jpeg_file_list = os.listdir(jpeg_list_path)
     for file in json_file_list:
-        json_path = os.path.join(json_list_path,file)
+        json_path = os.path.join(json_list_path, file)
         with open(json_path, 'r') as f:
             data = json.load(f)
-        if len(data['header']) <3:
-            for item in urls_dict:
-                file = file[:-5]
-                if file in item['annotationKey']:
-                    orgId = item['orgId']
-                    annotationKey = item['annotationKey']
-                    status = 'Failed'
-                    update_status_in_dynamodb(orgId, annotationKey, status)
-                    for jpeg in jpeg_file_list:
-                        if file in jpeg:
-                            jpeg_path = os.path.join(jpeg_list_path, jpeg)
-                            os.remove(jpeg_path)
-                            os.remove(json_path)
-        for item in data['item']:
-            if len(item) >=4:
-                pass
-            else:
-                for item in urls_dict:
-                    file = file[:-5]
-                    if file in item['annotationKey']:
-                        orgId = item['orgId']
-                        annotationKey = item['annotationKey']
+
+        # Check and rename key 'item' to 'items'
+        if 'item' in data:
+            data['items'] = data.pop('item')
+
+        # Perform the checks and update status if necessary
+        if len(data['header']) < 3:
+            for vendor, urls_list in urls_dict.items():
+                for urls in urls_list:
+                    if file[:-5] in urls['annotationKey']:
+                        orgId = urls['orgId']
+                        annotationKey = urls['annotationKey']
                         status = 'Failed'
                         update_status_in_dynamodb(orgId, annotationKey, status)
                         for jpeg in jpeg_file_list:
-                            if file in jpeg:
+                            if file[:-5] in jpeg:
                                 jpeg_path = os.path.join(jpeg_list_path, jpeg)
                                 os.remove(jpeg_path)
                                 os.remove(json_path)
+        for item in data['items']:
+            if len(item) < 4:
+                for vendor, urls_list in urls_dict.items():
+                    for urls in urls_list:
+                        if file[:-5] in urls['annotationKey']:
+                            orgId = urls['orgId']
+                            annotationKey = urls['annotationKey']
+                            status = 'Failed'
+                            update_status_in_dynamodb(orgId, annotationKey, status)
+                            for jpeg in jpeg_file_list:
+                                if file[:-5] in jpeg:
+                                    jpeg_path = os.path.join(jpeg_list_path, jpeg)
+                                    os.remove(jpeg_path)
+                                    os.remove(json_path)
+
+        # Save the updated JSON back to the file
+        with open(json_path, 'w') as f:
+            json.dump(data, f, indent=4)
+
 # Example usage
 urls_dict = count_entries_by_vendor()
-if len(urls_dict) <1:
-    print("No records to fetch exiting the script")
+if len(urls_dict) < 1:
+    print("No records to fetch, exiting the script")
     exit()
 for vendor, urls_list in urls_dict.items():
     print(f"Vendor: {vendor}")
     for urls in urls_list:
         print(f"s3Url: {urls['s3Url']}, jsonUrl: {urls['jsonUrl']}, annotationKey: {urls['annotationKey']}")
 
-
 download_jpeg_files(urls_dict, 'images')
-
 download_json_files(urls_dict, 'json')
-
 key_file_checker(urls_dict)
