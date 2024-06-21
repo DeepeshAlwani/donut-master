@@ -2,7 +2,7 @@ boto3
 transformers
 tensorboard
 tensorboardx
-datasets
+datasets==2.19.2
 pytorch-lightning
 pillow
 nltk
