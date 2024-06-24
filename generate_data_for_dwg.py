@@ -40,20 +40,23 @@ def get_pdf_s3_url():
     return s3url_org_doc_ids
 
 def download_file_from_s3(s3_url):
-    s3_client = boto3.client('s3', region_name=AWS_REGION, aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
-    print(f"Original S3 URL: {s3_url}")
-    position = s3_url.find('//', 8) + 2
-    object_key = s3_url[position:]
-    object_key = urllib.parse.unquote(object_key)
-    object_key = "/" + object_key
-    bucket_name = S3_BUCKET_NAME
-    print(f"Parsed Object Key: {object_key}")
-    print(f"Bucket Name: {bucket_name}")
-    file_obj = io.BytesIO()
-    s3_client.download_fileobj(bucket_name, object_key, file_obj)
-    file_obj.seek(0)
-    filename = object_key.split("/")[-1]
-    return file_obj, filename
+    try:
+        s3_client = boto3.client('s3', region_name=AWS_REGION, aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
+        print(f"Original S3 URL: {s3_url}")
+        position = s3_url.find('//', 8) + 2
+        object_key = s3_url[position:]
+        object_key = urllib.parse.unquote(object_key)
+        object_key = "/" + object_key
+        bucket_name = S3_BUCKET_NAME
+        print(f"Parsed Object Key: {object_key}")
+        print(f"Bucket Name: {bucket_name}")
+        file_obj = io.BytesIO()
+        s3_client.download_fileobj(bucket_name, object_key, file_obj)
+        file_obj.seek(0)
+        filename = object_key.split("/")[-1]
+        return file_obj, filename
+    except Exception as e:
+        print(f"Cannot download the coming pdf with s3Url: {s3_url} as exception: {e}")
 
 def upload_file_to_s3(filename, data, pageNum, docId):
     s3 = boto3.client('s3', region_name=AWS_REGION, aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
