@@ -6,6 +6,7 @@ import requests
 import sys
 import shutil
 import json
+from urllib.parse import urlparse
 
 # Define global variables
 table_name = 'AnnotationsInfo'
@@ -85,12 +86,20 @@ def download_jpeg_files(urls_dict, folder_name):
     for vendor, urls_list in urls_dict.items():
         for urls in urls_list:
             s3_url = urls['s3Url']
-            key = '/'.join(s3_url.split('/')[3:])  # Get the key from the URL
+            # Determine if the input is a URL or an object key
+            if s3_url.startswith("http://") or s3_url.startswith("https://"):
+                # Parse the URL
+                parsed_url = urlparse(s3_url)
+                key = parsed_url.path.lstrip('/')
+            else:
+                # Assume the input is an object key
+                key = s3_url
+
             presigned_url = s3.generate_presigned_url('get_object',
-                                            Params={'Bucket': S3_BUCKET_NAME, 'Key': key},
-                                            ExpiresIn=360)
+                                                      Params={'Bucket': S3_BUCKET_NAME, 'Key': key},
+                                                      ExpiresIn=360)
             response = requests.get(presigned_url)
-            filename = s3_url.split('/')[-1]  # Get the filename from the URL
+            filename = key.split('/')[-1]  # Get the filename from the key
             file_path = os.path.join(download_folder, folder_name)
             os.makedirs(file_path, exist_ok=True)
             file_path = os.path.join(file_path, filename)
@@ -98,7 +107,7 @@ def download_jpeg_files(urls_dict, folder_name):
             print(presigned_url)
             with open(file_path, 'wb') as f:
                 f.write(response.content)
-            update_status_in_dynamodb(urls['orgId'], urls['annotationKey'], status = 'Complete')
+            #update_status_in_dynamodb(urls['orgId'], urls['annotationKey'], status='Complete')
 
 def download_json_files(urls_dict, folder_name):
     # Create a new S3 client
@@ -114,7 +123,13 @@ def download_json_files(urls_dict, folder_name):
     for vendor, urls_list in urls_dict.items():
         for urls in urls_list:
             s3_url = urls['jsonUrl']
-            key = '/'.join(s3_url.split('/')[3:])  # Get the key from the URL
+            if s3_url.startswith("http://") or s3_url.startswith("https://"):
+                # Parse the URL
+                parsed_url = urlparse(s3_url)
+                key = parsed_url.path.lstrip('/')
+            else:
+                # Assume the input is an object key
+                key = s3_url  # Get the key from the URL
             presigned_url = s3.generate_presigned_url('get_object',
                                             Params={'Bucket': S3_BUCKET_NAME, 'Key': key},
                                             ExpiresIn=360)
@@ -149,7 +164,7 @@ def key_file_checker(urls_dict):
                         orgId = urls['orgId']
                         annotationKey = urls['annotationKey']
                         status = 'Failed'
-                        update_status_in_dynamodb(orgId, annotationKey, status)
+                        #update_status_in_dynamodb(orgId, annotationKey, status)
                         for jpeg in jpeg_file_list:
                             if file[:-5] in jpeg:
                                 jpeg_path = os.path.join(jpeg_list_path, jpeg)
@@ -163,7 +178,7 @@ def key_file_checker(urls_dict):
                             orgId = urls['orgId']
                             annotationKey = urls['annotationKey']
                             status = 'Failed'
-                            update_status_in_dynamodb(orgId, annotationKey, status)
+                            #update_status_in_dynamodb(orgId, annotationKey, status)
                             for jpeg in jpeg_file_list:
                                 if file[:-5] in jpeg:
                                     jpeg_path = os.path.join(jpeg_list_path, jpeg)
