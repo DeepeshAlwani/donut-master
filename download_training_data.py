@@ -36,7 +36,7 @@ def update_status_in_dynamodb(org_id, annotation_key, status):
 
     print(f"Updated status for orgId {org_id} and annotationKey {annotation_key}")
 
-def count_entries_by_vendor(AWS_REGION, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, table_name, column_name, THRESHOLD):
+def count_entries_by_vendor():
     # Create a DynamoDB client with specified credentials
     dynamodb = boto3.client('dynamodb', region_name=AWS_REGION,
                             aws_access_key_id=AWS_ACCESS_KEY_ID,
