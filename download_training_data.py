@@ -36,7 +36,7 @@ def update_status_in_dynamodb(org_id, annotation_key, status):
 
     print(f"Updated status for orgId {org_id} and annotationKey {annotation_key}")
 
-def count_entries_by_vendor():
+def count_entries_by_vendor(AWS_REGION, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, table_name, column_name, THRESHOLD):
     # Create a DynamoDB client with specified credentials
     dynamodb = boto3.client('dynamodb', region_name=AWS_REGION,
                             aws_access_key_id=AWS_ACCESS_KEY_ID,
@@ -57,8 +57,8 @@ def count_entries_by_vendor():
         if count > THRESHOLD:
             response = dynamodb.scan(
                 TableName=table_name,
-                FilterExpression='vendorName = :vendor and #status = :status',
-                ExpressionAttributeValues={':vendor': {'S': vendor}, ':status': {'S': 'notUsedForTraining'}},
+                FilterExpression='vendorName = :vendor and #status = :status and orgId = :orgId',
+                ExpressionAttributeValues={':vendor': {'S': vendor}, ':status': {'S': 'notUsedForTraining'}, ':orgId': {'S': '00DHo000002ekTWMAY'}},
                 ExpressionAttributeNames={'#status': 'status'}
             )
             urls_dict[vendor] = []
@@ -66,9 +66,9 @@ def count_entries_by_vendor():
             for item in items:
                 s3_url = item.get('s3Url', {}).get('S')
                 json_url = item.get('jsonUrl', {}).get('S')
-                annotation_key = item.get('annotationKey',{}).get('S')
-                org_id = item.get('orgId',{}).get('S')
-                urls_dict[vendor].append({'s3Url': s3_url, 'jsonUrl': json_url, 'orgId': org_id ,'annotationKey':annotation_key})
+                annotation_key = item.get('annotationKey', {}).get('S')
+                org_id = item.get('orgId', {}).get('S')
+                urls_dict[vendor].append({'s3Url': s3_url, 'jsonUrl': json_url, 'orgId': org_id, 'annotationKey': annotation_key})
 
     return urls_dict
 
@@ -107,7 +107,7 @@ def download_jpeg_files(urls_dict, folder_name):
             print(presigned_url)
             with open(file_path, 'wb') as f:
                 f.write(response.content)
-            #update_status_in_dynamodb(urls['orgId'], urls['annotationKey'], status='Complete')
+            update_status_in_dynamodb(urls['orgId'], urls['annotationKey'], status='Complete')
 
 def download_json_files(urls_dict, folder_name):
     # Create a new S3 client
@@ -164,7 +164,7 @@ def key_file_checker(urls_dict):
                         orgId = urls['orgId']
                         annotationKey = urls['annotationKey']
                         status = 'Failed'
-                        #update_status_in_dynamodb(orgId, annotationKey, status)
+                        update_status_in_dynamodb(orgId, annotationKey, status)
                         for jpeg in jpeg_file_list:
                             if file[:-5] in jpeg:
                                 jpeg_path = os.path.join(jpeg_list_path, jpeg)
@@ -178,7 +178,7 @@ def key_file_checker(urls_dict):
                             orgId = urls['orgId']
                             annotationKey = urls['annotationKey']
                             status = 'Failed'
-                            #update_status_in_dynamodb(orgId, annotationKey, status)
+                            update_status_in_dynamodb(orgId, annotationKey, status)
                             for jpeg in jpeg_file_list:
                                 if file[:-5] in jpeg:
                                     jpeg_path = os.path.join(jpeg_list_path, jpeg)
