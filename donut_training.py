@@ -210,7 +210,7 @@ config = {
 
 model_module = DonutModelPLModule(config, processor, model)
 tensorboard_logger = TensorBoardLogger("finetune_logs", name="donut-cord-v2")
-early_stop_callback = EarlyStopping(monitor="val_edit_distance", patience=2, verbose=True, mode="min")
+early_stop_callback = EarlyStopping(monitor="val_edit_distance", patience=8, verbose=True, mode="min")
 
 current_date = datetime.now()
 formatted_date = current_date.strftime("%d-%b-%Y")
