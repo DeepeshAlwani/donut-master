@@ -39,8 +39,8 @@ def get_s3_url(bucket, object_name):
 
 current_date = datetime.now().strftime('%d-%b-%Y')
 
-folder_path = f"{model_name}-{current_date}"
-zip_name = 'donut_dwg.zip'
+folder_path = f"fine_tuned_model"
+zip_name = f"{model_name}.zip"
 
 # Create the folder structure with the current date
 s3_folder = f'testing/models/donut/{current_date}/'
