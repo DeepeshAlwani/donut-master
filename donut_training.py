@@ -12,7 +12,7 @@ from nltk import edit_distance
 
 import torch
 from torch.utils.data import Dataset, DataLoader
-from transformers import VisionEncoderDecoderConfig, DonutProcessor, VisionEncoderDecoderModel
+from transformers import VisionEncoderDecoderConfig, DonutProcessor, VisionEncoderDecoderModel, AutoTokenizer
 import pytorch_lightning as pl
 from pytorch_lightning.utilities import rank_zero_only
 from pytorch_lightning.callbacks import Callback, EarlyStopping, ModelCheckpoint
@@ -47,6 +47,7 @@ config.decoder.max_length = max_length
 
 processor = DonutProcessor.from_pretrained(pretrained_model_path)
 model = VisionEncoderDecoderModel.from_pretrained(pretrained_model_path, config=config)
+tokenizer = AutoTokenizer.from_pretrained(pretrained_model_path)
 added_tokens = []
 
 class DonutDataset(Dataset):
@@ -195,11 +196,12 @@ class DonutModelPLModule(pl.LightningModule):
         return val_dataloader
 
 config = {
-    "max_epochs": 8,
+    "max_epochs": 1,
     "val_check_interval": 0.5,
     "check_val_every_n_epoch": 1,
     "gradient_clip_val": 1.0,
-    "lr": 3e-5,
+    "num_training_samples_per_epoch": 40,
+    "lr": 5e-5,
     "train_batch_sizes": [1],
     "val_batch_sizes": [1],
     "num_nodes": 1,
@@ -210,7 +212,7 @@ config = {
 
 model_module = DonutModelPLModule(config, processor, model)
 tensorboard_logger = TensorBoardLogger("finetune_logs", name="donut-cord-v2")
-early_stop_callback = EarlyStopping(monitor="val_edit_distance", patience=8, verbose=True, mode="min")
+early_stop_callback = EarlyStopping(monitor="val_edit_distance", patience=2, verbose=True, mode="min")
 
 current_date = datetime.now()
 formatted_date = current_date.strftime("%d-%b-%Y")
@@ -219,10 +221,10 @@ checkpoint_callback = ModelCheckpoint(
     monitor="val_edit_distance",
     dirpath="saved_model",
     filename=f"{model_name}-{formatted_date}",
-    save_top_k=1,  # Save only the best model
+    save_top_k=3,
     mode="min",
-    save_last=True  # Save the last checkpoint
 )
+
 
 trainer = pl.Trainer(
     accelerator="gpu", devices=1,
@@ -231,8 +233,13 @@ trainer = pl.Trainer(
     val_check_interval=config["val_check_interval"],
     check_val_every_n_epoch=config["check_val_every_n_epoch"],
     gradient_clip_val=config["gradient_clip_val"],
+    limit_train_batches=config["num_training_samples_per_epoch"],
     num_nodes=config["num_nodes"],
     logger=tensorboard_logger,
     callbacks=[early_stop_callback, checkpoint_callback]
 )
+print(added_tokens)
 trainer.fit(model_module)
+model.save_pretrained("fine_tuned_model")
+tokenizer.add_tokens(added_tokens)
+tokenizer.save_pretrained("fine_tuned_model")
