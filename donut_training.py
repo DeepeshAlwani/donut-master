@@ -277,7 +277,7 @@ class DonutModelPLModule(pl.LightningModule):
         return val_dataloader
 
 config = {
-    "max_epochs": 1,
+    "max_epochs": 12,
     "val_check_interval": 0.5,
     "check_val_every_n_epoch": 1,
     "gradient_clip_val": 1.0,
@@ -293,7 +293,7 @@ config = {
 
 model_module = DonutModelPLModule(config, processor, model)
 tensorboard_logger = TensorBoardLogger("finetune_logs", name="donut-cord-v2")
-early_stop_callback = EarlyStopping(monitor="val_edit_distance", patience=2, verbose=True, mode="min")
+early_stop_callback = EarlyStopping(monitor="val_edit_distance", patience=12, verbose=True, mode="min")
 
 current_date = datetime.now()
 formatted_date = current_date.strftime("%d-%b-%Y")
