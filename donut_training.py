@@ -196,7 +196,7 @@ class DonutModelPLModule(pl.LightningModule):
         return val_dataloader
 
 config = {
-    "max_epochs": 1,
+    "max_epochs": 8,
     "val_check_interval": 0.5,
     "check_val_every_n_epoch": 1,
     "gradient_clip_val": 1.0,
