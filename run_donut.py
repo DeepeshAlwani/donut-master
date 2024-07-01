@@ -63,7 +63,7 @@ def main():
     files_list = [file for file in files]
     
     # Split files_list array into 2 parts, 80% train, 20% validation
-    split_index = int(len(files_list) * 0.60)
+    split_index = int(len(files_list) * 0.80)
     train_files_list = files_list[:split_index]
     print("Train set size:", len(train_files_list))
     validation_files_list = files_list[split_index:]
